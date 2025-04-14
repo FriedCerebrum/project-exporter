@@ -238,6 +238,28 @@ def export_project_structure(root_dir, output_file, ignore_dirs=None, ignore_ext
 
         # Рекурсивно записываем структуру с содержимым в более компактном формате
         with open(temp_path, 'w', encoding='utf-8') as temp:
+            # ИСПРАВЛЕНИЕ: Сначала добавляем структуру директорий в base64 версию
+            temp.write(f"# Структура проекта: {os.path.basename(root_dir)}\n\n")
+            temp.write("```\n")
+
+            for root, dirs, files in os.walk(root_dir):
+                dirs[:] = [d for d in dirs if d not in ignore_dirs]
+
+                level = root.replace(root_dir, '').count(os.sep)
+                indent = ' ' * 4 * level
+                temp.write(f"{indent}{os.path.basename(root)}/\n")
+
+                sub_indent = ' ' * 4 * (level + 1)
+                for file in sorted(files):
+                    if any(file.endswith(ext) for ext in ignore_extensions):
+                        continue
+                    temp.write(f"{sub_indent}{file}\n")
+
+            temp.write("```\n\n")
+
+            # Затем добавляем содержимое файлов
+            temp.write("# Содержимое файлов\n\n")
+
             for root, dirs, files in os.walk(root_dir):
                 dirs[:] = [d for d in dirs if d not in ignore_dirs]
 
