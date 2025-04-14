@@ -12,7 +12,7 @@ Base64-кодирование — создание компактной верс
 
 Установка
 # Клонировать репозиторий
-git clone https://github.com/username/project-exporter.git
+git clone https://github.com/FriedCerebrum/project-exporter.git
 
 # Перейти в директорию проекта
 cd project-exporter
